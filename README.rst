@@ -116,12 +116,13 @@ Bibliografia principal
 ----------------------
 
 * Crafting Interpreters, Robert Nystrom, 2015-2021. (https://craftinginterpreters.com/)
-* **(SICP)** Structure and Interpretation of Computer Programs, Gerald Jay Sussman and Hal Abelson, MIT Press. (https://web.mit.edu/alexmv/6.037/sicp.pdf)
+* Crafting Interpreters, Versão em Python (https://github.com/fabiommendes/craftinginterpreters)
 
 
 Material suplementar
 --------------------
 
+* **(SICP)** Structure and Interpretation of Computer Programs, Gerald Jay Sussman and Hal Abelson, MIT Press. (https://web.mit.edu/alexmv/6.037/sicp.pdf)
 * **Curso de Python:** https://scrimba.com/learn/python
 * **Curso de Python no Youtube (pt-BR):** https://www.youtube.com/watch?v=S9uPNppGsGo&list=PLvE-ZAFRgX8hnECDn1v9HNTI71veL3oW0
 
