@@ -1,0 +1,29 @@
+Print:
+
+- Order proof from IngramSpark.
+
+eBook:
+
+- Fix all TODOs in asset/ebook/*.
+- Create wider cover image for non-Kindle.
+- Style TOC page.
+- Assign ISBN numbers:
+  https://www.myidentifiers.com/title_registration?isbn=978-0-9905829-3-9&icon_type=New
+- Get example snippet in chapter one looking right.
+- Make eBook exporter handle Kindle.
+- Generate PDF version.
+  - Include cover.
+  - Get table of contents links working.
+- Style tables (see "Chunks of Bytecode").
+- Check out on a few different readers.
+- Go through whole book and see how it looks.
+- Make sure inline images look OK.
+
+Web:
+
+- Link to stores.
+- Export sample chapter PDF.
+- Remove "not done" script, templates and styles.
+- Replace "work in progress" header with something about print edition.
+- Add snippets for remaining chapters to compile_snippets to pin down which
+  snippets reach a working point.

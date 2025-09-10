@@ -1,0 +1,4 @@
+// Example file
+var x = 10;
+print "Hello World!";
+print 4 * x + 2 == 42;

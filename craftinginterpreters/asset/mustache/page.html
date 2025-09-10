@@ -1,0 +1,52 @@
+{{> header }}
+<nav class="wide">
+  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <div class="contents">
+{{> nav }}  </div>
+</nav>
+
+<nav class="narrow">
+<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+{{# has_prev }}
+<a href="{{ prev_file }}.html" title="{{ prev }}" class="prev">←</a>
+{{/ has_prev }}
+{{# has_next }}
+<a href="{{ next_file }}.html" title="{{ next }}" class="next">→</a>
+{{/ has_next }}
+</nav>
+
+<div class="page">
+<div class="nav-wrapper">
+<nav class="floating">
+  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <div class="expandable">
+{{> nav }}
+  </div>
+  <a id="expand-nav">≡</a>
+</nav>
+</div>
+
+<article class="chapter">
+
+{{# has_number }}
+  <div class="number">{{ number }}</div>
+{{/ has_number }}
+{{# is_chapter }}
+  <h1>{{ title }}</h1>
+{{/ is_chapter }}
+{{^ is_chapter }}
+  <h1 class="part">{{ title }}</h1>
+{{/ is_chapter }}
+
+{{{ body }}}
+<footer>
+{{# has_next }}
+<a href="{{ next_file }}.html" class="next">
+  Next {{ next_type }}: &ldquo;{{ next }}&rdquo; &rarr;
+</a>
+{{/ has_next }}
+Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
+</footer>
+</article>
+
+{{> footer }}

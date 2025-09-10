@@ -1,0 +1,22 @@
+[project]
+name = "lox"
+version = "0.1.0"
+# description = "Lox language implementation in Python"
+# readme = "README.md"
+# authors = [
+#     { name = "Fábio Macêdo Mendes", email = "fabiomacedomendes@gmail.com" },
+# ]
+requires-python = ">=3.12"
+# dependencies = []
+
+[project.scripts]
+pylox = "lox.lox:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]

@@ -1,0 +1,246 @@
+@import 'sass/shared';
+@import 'sass/sign-up';
+
+body, h1, h2, h3, h4, p, blockquote, code, ul, ol, dl, dd, img {
+  margin: 0;
+}
+
+body {
+  background: $dark url('image/background.png') top center / 100% auto no-repeat;
+  color: #222;
+  font: normal 16px/24px $serif;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+
+  border-bottom: solid 1px transparentize($light, 1.0);
+
+  transition: color 0.2s ease,
+              border-color 0.4s ease;
+}
+
+a:hover {
+  color: $primary;
+  border-bottom: solid 1px opacify($light, 1.0);
+}
+
+article {
+  margin: 0 auto;
+  padding: 0 0 12px 0;
+  max-width: $col * 20;
+  background: #fff;
+}
+
+header {
+  margin: 0 0 $col 0;
+  color: $warm-dark;
+  background: $warm-5;
+  border-bottom: solid 1px $warm-4;
+}
+
+main {
+  margin: 0 $col;
+}
+
+img.header {
+  display: block;
+  width: 100%;
+}
+
+img.small {
+  display: none;
+}
+
+div.intro {
+  display: flex;
+
+  blockquote {
+    flex-basis: 40%;
+    margin: 0 $col 0 0;
+    font: italic 28px/42px $serif;
+  }
+
+  div.text {
+    flex-basis: 60%;
+    margin: 8px 0 24px 0;
+  }
+}
+
+p + p {
+  margin-top: 24px;
+}
+
+.format {
+  margin: 0 -12px 24px -12px;
+  padding: 12px 12px 8px 12px;
+  height: 244px;
+
+  box-sizing: border-box;
+  background: $lighter;
+  background-size: cover;
+  background-position: left;
+
+  color: #444;
+  border-radius: 3px;
+  font: normal 16px/24px $nav;
+
+  h3 {
+    margin: 0;
+    padding: 0 0 4px 0;
+    font: 600 16px/24px $nav;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
+}
+
+.format.print, .format.pdf {
+  background-position: right;
+  text-align: right;
+}
+
+.format-info {
+  display: inline-block;
+  width: $col * 8;
+  text-align: left;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    td + td {
+      padding-left: 5px;
+    }
+  }
+}
+
+.format.print { background-image: url("image/format-print.jpg"); }
+.format.ebook { background-image: url("image/format-ebook.jpg"); }
+.format.pdf {   background-image: url("image/format-pdf.jpg"); }
+.format.web {   background-image: url("image/format-web.jpg"); }
+
+a.action {
+  display: block;
+
+  margin: 0 0 4px 0;
+  padding: 4px 0;
+  text-align: center;
+  border-radius: 3px;
+  background: $primary;
+
+  transition: background-color 0.2s ease,
+              color 0.2s ease;
+
+  font: 400 17px/24px $nav;
+  color: white;
+
+  small {
+    font-size: 14px;
+    padding: 4px;
+    color: hsla(0, 0, 100%, 0.7);
+    transition: color 0.2s ease;
+  }
+}
+
+a.action:hover {
+  background-color: hsl(200, 85%, 55%);
+
+  small {
+    color: white;
+  }
+}
+
+  h3 {
+    font: italic 24px/24px $serif;
+    margin: 12px 0;
+  }
+
+img.author {
+  float: left;
+  width: 240px;
+  margin: 0 12px 0 -12px;
+  padding: 12px;
+
+  background: $warm-5;
+  border-radius: 3px;
+}
+
+div.author {
+  vertical-align: top;
+  margin: 36px 0 0 240px + $col;
+}
+
+footer {
+  position: relative;
+  border-top: solid 1px $light;
+  color: $gray-4;
+  font: 400 15px $nav;
+  text-align: center;
+  margin: 12px 0 36px 0;
+  padding-top: 48px;
+
+  a, a:hover {
+    border: none;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  main {
+    margin: 0 24px;
+  }
+
+  header {
+    margin-bottom: 24px;
+  }
+
+  img.big {
+    display: none;
+  }
+
+  img.small {
+    display: block;
+  }
+
+  div.intro {
+    display: block;
+
+    blockquote {
+      display: block;
+      font: italic 24px/36px $serif;
+    }
+
+    div.text {
+      display: block;
+      margin: 24px 0 24px 0;
+    }
+  }
+
+  .format {
+    margin-bottom: 12px;
+    height: auto;
+    background-blend-mode: lighten;
+  }
+
+  .format-info {
+    display: block;
+    width: 100%;
+  }
+
+  .format.print { background-color: #a6a29f; }
+  .format.ebook { background-color: #97a2aa; }
+  .format.pdf {   background-color: #cfccca; }
+  .format.web {   background-color: #d6dbd3; }
+
+  img.author {
+    float: none;
+  }
+
+  div.author {
+    margin: 0 0 0 0;
+  }
+}
