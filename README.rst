@@ -2,6 +2,9 @@
 Avisos!
 =======
 
+Inscrição no Moodle: https://aprender3.unb.br/course/view.php?id=29181
+Senha: loxlox
+
 ==============
 Compiladores 1
 ==============
@@ -69,6 +72,11 @@ Github Classroom:
 
 Formulário de inscrição:
     https://docs.google.com/forms/d/12gy67ybJXSMaWfJ5ltfoFI0X4o8V9xGWXyoY89MhM6c/
+
+Moodle:
+    https://aprender3.unb.br/course/view.php?id=29181
+    Senha: loxlox
+
 
 
 Critérios de avaliação
