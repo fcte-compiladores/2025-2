@@ -25,10 +25,10 @@ class Binary(Expr):
     right: Expr
 
 @dataclass
-class Grouping(Expr):
-    expression: Expr
-
-@dataclass
 class Unary(Expr):
     operator: Token
     right: Expr
+
+@dataclass
+class Grouping(Expr):
+    expression: Expr

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from .token import Token, TokenType
-from .expr import Expr, Literal, Identifier, BinaryOp
+from .expr import Expr, Literal, Identifier, Binary, Unary, Grouping
 
 
 def parse(tokens: list[Token]) -> Expr:
@@ -23,7 +23,7 @@ class Parser:
         while self.peek().type in (TokenType.PLUS, TokenType.MINUS):
             op = self.next()
             right = self.term()
-            left = BinaryOp(left, op.type, right)
+            left = Binary(left, op, right)
         return left
 
     def term(self) -> Expr:
@@ -34,7 +34,7 @@ class Parser:
         while self.peek().type in (TokenType.STAR, TokenType.SLASH):
             op = self.next()
             right = self.pow()
-            left = BinaryOp(left, op.type, right)
+            left = Binary(left, op, right)
         return left
 
     def pow(self) -> Expr:
@@ -55,6 +55,8 @@ class Parser:
         match token.type:
             case TokenType.NUMBER | TokenType.STRING | TokenType.TRUE | TokenType.FALSE | TokenType.NIL:
                 return Literal(token.literal)
+            case TokenType.IDENTIFIER:
+                return Identifier(token.lexeme)
             case TokenType.LEFT_PAREN:
                 expr = self.expr()
                 if self.next().type != TokenType.RIGHT_PAREN:
