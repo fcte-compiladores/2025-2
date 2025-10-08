@@ -1,4 +1,6 @@
+from enum import Enum
 from dataclasses import dataclass
+from .token import TokenType
 
 type Value = str | float | bool | None
 
@@ -13,35 +15,13 @@ class Expr:
 class Literal(Expr):
     value: Value
 
-    def eval(self) -> Value:
-        return self.value
-
+@dataclass
+class Identifier(Expr):
+    name: str
 
 @dataclass
-class Add(Expr):
+class BinaryOp(Expr):
     left: Expr
+    op: TokenType
     right: Expr
 
-    def eval(self) -> Value:
-        return self.left.eval() + self.right.eval()  # type: ignore
-
-
-@dataclass
-class Sub(Expr):
-    left: Expr
-    right: Expr
-
-    def eval(self) -> Value:
-        return self.left.eval() - self.right.eval()  # type: ignore
-
-
-@dataclass
-class Mul(Expr):
-    left: Expr
-    right: Expr
-
-
-@dataclass
-class Div(Expr):
-    left: Expr
-    right: Expr

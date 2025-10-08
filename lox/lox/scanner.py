@@ -100,6 +100,8 @@ class Scanner:
                 pass  # Ignore whitespace
             case "\n":
                 self.line += 1
+            case _ if char.isdigit() and char.isascii():
+                self.number()
             case _ if char.isalpha() and char.isascii() or char == "_":
                 self.identifier()
             case _:
@@ -144,6 +146,15 @@ class Scanner:
         if token.lexeme in KEYWORDS:
             token.type = KEYWORDS[token.lexeme]
 
+        match token.lexeme:
+            case "true":
+                token.literal = True
+            case "false":
+                token.literal = False
+            case "nil":
+                token.literal = None
+
+
     def string(self) -> None:
         while self.peek() != "\"" and not self.is_at_end():
             self.advance()
@@ -154,3 +165,11 @@ class Scanner:
         token = Token(TokenType.STRING, lexeme, self.line, literal)
         self.tokens.append(token)
 
+    def number(self) -> None:
+        while self.peek().isdigit() and self.peek().isascii():
+            self.advance()
+        self.add_token(TokenType.NUMBER)
+
+        # Check for reserved words
+        token = self.tokens[-1]
+        token.literal = float(token.lexeme)
