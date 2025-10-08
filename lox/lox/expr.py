@@ -1,6 +1,5 @@
-from enum import Enum
 from dataclasses import dataclass
-from .token import TokenType
+from .token import Token
 
 type Value = str | float | bool | None
 
@@ -20,8 +19,16 @@ class Identifier(Expr):
     name: str
 
 @dataclass
-class BinaryOp(Expr):
+class Binary(Expr):
     left: Expr
-    op: TokenType
+    operator: Token
     right: Expr
 
+@dataclass
+class Grouping(Expr):
+    expression: Expr
+
+@dataclass
+class Unary(Expr):
+    operator: Token
+    right: Expr
