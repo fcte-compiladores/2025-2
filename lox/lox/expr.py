@@ -32,3 +32,8 @@ class Unary(Expr):
 @dataclass
 class Grouping(Expr):
     expression: Expr
+
+@dataclass
+class Assign(Expr):
+    name: str
+    right: Expr

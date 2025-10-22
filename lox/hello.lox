@@ -1,0 +1,11 @@
+var name;
+var a;
+a = name = "Joao";
+
+{
+  var name = "Jose";
+  name = "Josefina";
+}
+print name;
+print a;
+print "Hello " + name + "!";
