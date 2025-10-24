@@ -1,0 +1,16 @@
+{
+    "nome": "Fulano",
+    "idade": 30,
+    "empregos": [
+        {
+            "empresa": "Empresa A",
+            "ano_inicio": 2015,
+            "ano_fim": 2018
+        },
+        {
+            "empresa": "Empresa B",
+            "ano_inicio": 2019,
+            "ano_fim": null
+        }
+    ]
+}

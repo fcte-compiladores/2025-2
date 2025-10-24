@@ -3,7 +3,8 @@ import sys
 from .expr import Value
 from .scanner import tokenize
 from .parser import parse_expression, parse_program
-from .eval import eval, exec
+from .interpreter import eval, exec
+from .env import Env
 
 
 def main():
@@ -43,7 +44,7 @@ def repl():
 
 class Lox:
     def __init__(self):
-        self.ctx = {"x": 10.0, "y": 2.0}
+        self.ctx = Env()
 
     def run_expression(self, src: str) -> Value:
         tokens = tokenize(src)

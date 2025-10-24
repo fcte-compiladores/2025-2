@@ -30,6 +30,20 @@ class Var(Stmt):
     name: str
     right: Expr
 
+
 @dataclass
 class Block(Stmt):
-    body:list[Stmt]
+    body: list[Stmt]
+
+
+@dataclass
+class If(Stmt):
+    cond: Expr
+    then_body: Stmt
+    else_body: Stmt
+
+
+@dataclass
+class While(Stmt):
+    cond: Expr
+    body: Stmt

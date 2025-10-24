@@ -1,11 +1,24 @@
-var name;
-var a;
-a = name = "Joao";
+var name = "João";
+var cond_a = true;
+var cond_b = true;
 
-{
-  var name = "Jose";
+if (cond_a)
   name = "Josefina";
-}
-print name;
-print a;
+else if (cond_b)
+  name = "Maria";
+else
+  name = "José";
+
 print "Hello " + name + "!";
+
+
+print "for...";
+for (var i = 0; cond_a; i = i + 1) {
+  print i;
+
+  if (cond_b) {
+    cond_b = false;
+  } else {
+    cond_a = false;
+  }
+}
