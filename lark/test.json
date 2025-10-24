@@ -1,0 +1,19 @@
+// Esse comentário nao deveria estar aqui!
+[
+  {
+    "hello": 42
+  },
+  true,
+  false,
+  null,
+  [],
+  [
+    3.14,
+    41,
+    42,
+    -10,
+    1.243543e-12,
+    "hello",
+    "hello 💩\"\u03b2"
+  ]
+]

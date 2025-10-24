@@ -1,0 +1,30 @@
+?start : value
+
+?value : object
+       | array
+       | STRING
+       | NUMBER
+       | LITERAL
+
+object : "{" [ pair ( "," pair )* ] "}"
+pair   : STRING ":" value
+
+array  : "[" [ value ( "," value )* ] "]"
+
+STRING  : "\"" CHAR* "\""
+CHAR    : /[^"\\]/ | ESCAPE
+ESCAPE  : /\\["\\//ntrfb]/
+        | /\\u[0-9a-fA-F]{4}/
+        | /\\U[0-9a-fA-F]{8}/
+
+
+NUMBER  : INT DECIMAL? SCI?
+INT     : /-?(0|[1-9][0-9]*)/
+DECIMAL : /\.[0-9]+/
+SCI     : /[eE][+-]?[0-9]+/
+
+LITERAL : /true|false|null/
+SPACE   : /\s+/
+COMMENT : "//" /[^\n]*/
+
+%ignore SPACE | COMMENT
