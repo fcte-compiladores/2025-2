@@ -61,6 +61,10 @@ def _(expr: Binary, ctx: Env):
             if isinstance(left, float) and isinstance(right, float):
                 return left * right
             raise RuntimeError(f"operação inválida: {left} * {right}")
+        case TokenType.SLASH:
+            if isinstance(left, float) and isinstance(right, float):
+                return left / right
+            raise RuntimeError(f"operação inválida: {left} * {right}")
 
         # ...
 
@@ -69,6 +73,10 @@ def _(expr: Binary, ctx: Env):
             if type(left) != type(right):  # noqa
                 return False
             return left == right
+        case TokenType.BANG_EQUAL:
+            if type(left) != type(right):  # noqa
+                return True
+            return left != right
         case TokenType.GREATER_EQUAL:
             if isinstance(left, float) and isinstance(right, float):
                 return left >= right

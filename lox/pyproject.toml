@@ -3,6 +3,7 @@ name = "lox"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "lark-parser>=0.12.0",
     "rich>=14.1.0",
 ]
 

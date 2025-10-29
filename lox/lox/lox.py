@@ -1,11 +1,15 @@
 import sys
+import os
 
 from .expr import Value
-from .scanner import tokenize
-from .parser import parse_expression, parse_program
-from .interpreter import eval, exec
 from .env import Env
+from .interpreter import eval, exec
 
+if os.environ.get("LOX_PARSER", "lox") == "lark":
+    from .parser_lark import tokenize, parse_expression, parse_program
+else:
+    from .scanner import tokenize # type: ignore
+    from .parser import parse_expression, parse_program # type: ignore
 
 def main():
     if len(sys.argv) == 1:
