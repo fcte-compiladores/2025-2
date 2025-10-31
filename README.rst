@@ -2,6 +2,8 @@
 Avisos!
 =======
 
+Inscrição para atividade no Github Classroom: https://classroom.github.com/a/l759oI8Y
+
 Inscrição no Moodle: https://aprender3.unb.br/course/view.php?id=29181
 Senha: loxlox
 
