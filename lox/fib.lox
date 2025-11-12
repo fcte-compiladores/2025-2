@@ -1,0 +1,16 @@
+var n = 10;
+
+fun makeFib() {
+  fun fib(n) {
+    if (1 >= n) return 1;
+    else return fib(n - 1) + fib(n - 2);
+  }
+  return fib;
+}
+
+
+var f = makeFib();
+var t0 = clock();
+print f(n);
+print clock() - t0;
+

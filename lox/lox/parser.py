@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from .stmt import Block, If, Program, Print, ExprStmt, Stmt, Var, While
+from .ast import Expr, Literal, Identifier, Binary, Assign
+from .ast import Block, If, Program, Print, ExprStmt, Stmt, Var, While
 from .token import Token, TokenType
-from .expr import Expr, Literal, Identifier, Binary, Assign
 
 
 def parse_expression(tokens: list[Token]) -> Expr:

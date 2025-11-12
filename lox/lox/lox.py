@@ -1,15 +1,15 @@
 import sys
 import os
 
-from .expr import Value
+from .ast import Value
 from .env import Env
 from .interpreter import eval, exec
 
-if os.environ.get("LOX_PARSER", "lox") == "lark":
-    from .parser_lark import tokenize, parse_expression, parse_program
-else:
+if os.environ.get("LOX_PARSER", "lark") == "manual":
     from .scanner import tokenize # type: ignore
     from .parser import parse_expression, parse_program # type: ignore
+else:
+    from .parser_lark import tokenize, parse_expression, parse_program # type: ignore
 
 def main():
     if len(sys.argv) == 1:
@@ -48,7 +48,13 @@ def repl():
 
 class Lox:
     def __init__(self):
+        import time
+        from math import sqrt
+        from lox.runtime import NativeFunction
         self.ctx = Env()
+        self.ctx.define("sqrt", NativeFunction(sqrt, 1))
+        self.ctx.define("clock", NativeFunction(time.time, 0))
+
 
     def run_expression(self, src: str) -> Value:
         tokens = tokenize(src)

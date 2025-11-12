@@ -1,8 +1,10 @@
 from functools import singledispatch
 
-from .stmt import Block, ExprStmt, If, Print, Program, Stmt, Var, While
+from .runtime import LoxCallable
 from .token import TokenType
-from .expr import Expr, Value, Literal, Grouping, Unary, Binary, Identifier, Assign
+from .ast import Value
+from .ast import Call, Expr, Literal, Grouping, Unary, Binary, Identifier, Assign
+from .ast import Block, ExprStmt, If, Print, Program, Stmt, Var, While
 from .env import Env
 
 
@@ -100,11 +102,21 @@ def _(expr: Identifier, ctx: Env):
 
 
 @eval.register
-def _(cmd: Assign, ctx: Env) -> Value:
-    value = eval(cmd.right, ctx)
-    ctx[cmd.name] = value
+def _(expr: Assign, ctx: Env) -> Value:
+    value = eval(expr.right, ctx)
+    ctx[expr.name] = value
     return value
 
+
+@eval.register
+def _(expr: Call, ctx: Env) -> Value:
+    callee = eval(expr.callee, ctx)
+    args = [eval(arg, ctx) for arg in expr.args]
+    if not isinstance(callee, LoxCallable):
+        raise RuntimeError(f"{callee} não é uma função.")
+    if len(args) != callee.n_args():
+        raise RuntimeError(f"{callee}: número errado de argumentos.")
+    return callee.call(ctx, args)
 
 #
 # Implementações de exec
@@ -150,6 +162,7 @@ def _(cmd: If, ctx: Env):
 def _(cmd: While, ctx: Env):
     while truthy(eval(cmd.cond, ctx)):
         exec(cmd.body, ctx)
+
 
 
 def truthy(obj) -> bool:

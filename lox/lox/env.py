@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .expr import Value
+from .ast import Value
 
 
 @dataclass
@@ -30,3 +30,6 @@ class Env:
         if key in self.values:
             raise RuntimeError(f"redefinindo variável {key}.")
         self.values[key] = value
+
+    def push(self):
+        return Env(self)

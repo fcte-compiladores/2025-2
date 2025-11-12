@@ -51,7 +51,10 @@ block          : "{" _declaration* "}"
 ?unary         : /!|-/ unary
                | call
 
-?call          : primary ( "(" arguments? ")" | "." IDENTIFIER )*
+?call          : call "(" arguments? ")"          -> call
+               | call "." IDENTIFIER              -> getattr
+               | primary
+
 ?primary       : LITERAL
                | NUMBER | STRING | IDENTIFIER | "(" expression ")"
                | "super" "." IDENTIFIER

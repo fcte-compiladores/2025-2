@@ -1,0 +1,35 @@
+fun pair(x, y) {
+  fun f(i) {
+    if (i == 0) {
+      return x;
+    } else {
+      return y;
+    }
+  }
+  return f;
+}
+
+fun x(pair) {
+  return pair(0);
+}
+
+fun y(pair) {
+  return pair(1);
+}
+
+fun add(v1, v2) {
+  return pair(x(v1) + x(v2), y(v1) + y(v2));
+}
+
+fun printPair(pair) {
+  print "Vetor";
+  print x(pair);
+  print y(pair);
+}
+
+var coords = pair(10, 1);
+var delta = pair(2, 2);
+
+print x(coords);
+print y(coords);
+printPair(add(coords, delta));

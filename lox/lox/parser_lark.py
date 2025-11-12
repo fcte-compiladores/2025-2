@@ -1,8 +1,8 @@
 from pathlib import Path
 import lark
 from .token import Token, TokenType
-from .expr import Binary, Expr, Literal, Unary
-from .stmt import Block, If, Print, Stmt, Program
+from .ast import Binary, Expr, ExprStmt, Function, Identifier, Literal, Return, Unary, Call, Var
+from .ast import Block, If, Print, Stmt, Program
 
 BASE = Path(__file__).parent / "grammar.lark"
 SOURCE = BASE.read_text()
@@ -13,6 +13,9 @@ type Input = str
 
 @lark.v_args(inline=True)
 class LoxTransformer(lark.Transformer):
+    #
+    # Terminais
+    #
     def STRING(self, token: lark.Token):
         return Literal(token[1:-1])
 
@@ -27,23 +30,61 @@ class LoxTransformer(lark.Transformer):
         if token == "nil":
             return Literal(None)
 
-    def if_stmt(self, cond, then, else_=None):
-        if else_ is None:
-            else_ = Block([])  # lox: else {}
-        return If(cond, then, else_)
+    def IDENTIFIER(self, token: lark.Token):
+        return Identifier(str(token))
 
+    #
+    # Expr
+    #
     def binary(self, left: Expr, op: lark.Token, right: Expr):
         return Binary(left, lox_token(op), right)
 
     def unary(self, op: lark.Token, right: Expr):
         return Unary(lox_token(op), right)
 
-    def print_stmt(self, expression):
-        return Print(expression)
+    def call(self, callee: Expr, args=None):
+        return Call(callee, args or [])
 
+    @lark.v_args(inline=False)
+    def arguments(self, children: list[Expr]):
+        return children
+
+    #
+    # Stmt
+    #
     @lark.v_args(inline=False)
     def program(self, children):
         return Program(children)
+
+    def expr_stmt(self, expr: Expr):
+        return ExprStmt(expr)
+
+    def print_stmt(self, expression):
+        return Print(expression)
+
+    def var_decl(self, identifier: Identifier, initializer=None):
+        if initializer is None:
+            initializer = Literal(None)
+        return Var(identifier.name, initializer)
+
+    @lark.v_args(inline=False)
+    def block(self, children: list[Stmt]):
+        return Block(children)
+
+    def if_stmt(self, cond, then, else_=None):
+        if else_ is None:
+            else_ = Block([])  # lox: else {}
+        return If(cond, then, else_)
+
+    def function(self, name: Identifier, parameters: list[str], body: Block):
+        return Function(name.name, parameters, body.body)
+
+    def return_stmt(self, expr: Expr | None = None):
+        return Return(expr)
+
+    @lark.v_args(inline=False)
+    def parameters(self, children: list[Identifier]) -> list[str]:
+        return [identifier.name for identifier in children]
 
 
 def tokenize(src: str) -> Input:
@@ -57,15 +98,15 @@ def parse_expression(input: Input) -> Expr:
 
 def parse_program(input: Input) -> Stmt:
     tree = GRAMMAR.parse(input, start="program")
-    print(tree.pretty())
+    # print(tree.pretty())
     transformer = LoxTransformer()
-    print("-" * 40)
+    # print("-" * 40)
     ast = transformer.transform(tree)
-    if hasattr(ast, "pretty"):
-        print(ast.pretty())
-    else:
-        import rich
-        rich.print(ast)
+    # if hasattr(ast, "pretty"):
+    #     print(ast.pretty())
+    # else:
+    #     import rich
+    #     rich.print(ast)
     # exit("tchau!")
     return ast
 
