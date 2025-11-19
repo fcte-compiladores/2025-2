@@ -21,15 +21,22 @@ fun add(v1, v2) {
   return pair(x(v1) + x(v2), y(v1) + y(v2));
 }
 
+fun sub(v1, v2) {
+  return pair(x(v1) - x(v2), y(v1) - y(v2));
+}
+
+fun mul(s, v) {
+  return pair(s * x(v), s * y(v));
+}
+
+
 fun printPair(pair) {
   print "Vetor";
   print x(pair);
   print y(pair);
 }
 
-var coords = pair(10, 1);
+var p0 = pair(10, 1);
 var delta = pair(2, 2);
 
-print x(coords);
-print y(coords);
-printPair(add(coords, delta));
+printPair(add(p0, mul(2, delta)));

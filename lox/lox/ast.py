@@ -1,8 +1,13 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
 import abc
 from .token import Token
 
-type Value = str | float | bool | None
+if TYPE_CHECKING:
+    from .runtime import LoxFunction, NativeFunction, LoxClass, LoxInstance
+
+type Value = str | float | bool | None | LoxFunction | NativeFunction | LoxClass | LoxInstance
 
 
 class Expr(abc.ABC):
@@ -93,6 +98,11 @@ class Function(Stmt):
     name: str
     params: list[str]
     body: list[Stmt]
+
+
+@dataclass
+class Return(Stmt):
+    value: Expr | None
 
 
 @dataclass

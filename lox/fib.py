@@ -1,5 +1,4 @@
 import time
-n = 20
 
 def fib(n):
     if 1 >= n:
@@ -8,6 +7,7 @@ def fib(n):
         return fib(n - 1) + fib(n - 2)
 
 t0 = time.time()
-print(fib(n))
+for i in range(1000):
+    fib(20)
 print(time.time() - t0)
 

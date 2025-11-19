@@ -6,7 +6,7 @@ _declaration   : class_decl
                | statement
 
 class_decl     : "class" IDENTIFIER ( "<" IDENTIFIER )? "{" function* "}"
-fun_decl       : "fun" function
+?fun_decl      : "fun" function
 var_decl       : "var" IDENTIFIER ( "=" expression )? ";"
 
 ?statement     : expr_stmt
@@ -59,8 +59,8 @@ block          : "{" _declaration* "}"
                | NUMBER | STRING | IDENTIFIER | "(" expression ")"
                | "super" "." IDENTIFIER
 
-function       : IDENTIFIER "(" parameters? ")" block
-parameters     : IDENTIFIER ( "," IDENTIFIER )*
+function       : IDENTIFIER "(" parameters ")" block
+parameters     : [ IDENTIFIER ( "," IDENTIFIER )* ]
 arguments      : expression ( "," expression )*
 
 OP_COMPARISON  : ">" | ">=" | "<" | "<="

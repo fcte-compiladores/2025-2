@@ -1,8 +1,8 @@
 from pathlib import Path
 import lark
 from .token import Token, TokenType
-from .ast import Binary, Expr, ExprStmt, Function, Identifier, Literal, Return, Unary, Call, Var
-from .ast import Block, If, Print, Stmt, Program
+from .ast import Binary, Expr, ExprStmt, Identifier, Literal, Return, Unary, Call
+from .ast import Block, If, Print, Stmt, Program, Var, Function
 
 BASE = Path(__file__).parent / "grammar.lark"
 SOURCE = BASE.read_text()
@@ -76,19 +76,20 @@ class LoxTransformer(lark.Transformer):
             else_ = Block([])  # lox: else {}
         return If(cond, then, else_)
 
-    def function(self, name: Identifier, parameters: list[str], body: Block):
-        return Function(name.name, parameters, body.body)
+    def function(self, identifier: Identifier, parameters: list[str], block: Block):
+        return Function(identifier.name, parameters, block.body)
 
-    def return_stmt(self, expr: Expr | None = None):
-        return Return(expr)
+    def return_stmt(self, value: Expr | None = None):
+        return Return(value)
 
     @lark.v_args(inline=False)
-    def parameters(self, children: list[Identifier]) -> list[str]:
+    def parameters(self, children: list[Identifier]):
         return [identifier.name for identifier in children]
 
 
 def tokenize(src: str) -> Input:
     return src
+
 
 def parse_expression(input: Input) -> Expr:
     tree = GRAMMAR.parse(input, start="expression")
@@ -98,15 +99,15 @@ def parse_expression(input: Input) -> Expr:
 
 def parse_program(input: Input) -> Stmt:
     tree = GRAMMAR.parse(input, start="program")
-    # print(tree.pretty())
     transformer = LoxTransformer()
-    # print("-" * 40)
     ast = transformer.transform(tree)
+    # print("-" * 40)
     # if hasattr(ast, "pretty"):
     #     print(ast.pretty())
     # else:
     #     import rich
     #     rich.print(ast)
+    # print("-" * 40)
     # exit("tchau!")
     return ast
 

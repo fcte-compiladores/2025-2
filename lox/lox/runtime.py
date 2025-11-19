@@ -2,10 +2,10 @@ from __future__ import annotations
 import abc
 from dataclasses import dataclass
 from typing import Callable, Any, TYPE_CHECKING
-from .ast import Function
 
 if TYPE_CHECKING:
     from .interpreter import Value, Env
+    from .ast import Function
 
 
 class LoxCallable(abc.ABC):
@@ -33,12 +33,28 @@ class NativeFunction(LoxCallable):
 @dataclass
 class LoxFunction(LoxCallable):
     ast: Function
+    closure: Env
 
     def n_args(self):
        return len(self.ast.params)
 
-    def call(self, ctx: Env, args: list[Value]):
-        ...
+    def call(self, ctx: Env, argvalues: list[Value]):
+        from .interpreter import exec, LoxReturn
+
+        # Abre um novo escopo de variáveis
+        ctx = self.closure.new_scope()
+
+        # Insere os argumentos no escopo atual
+        argnames = self.ast.params
+        for name, value in zip(argnames, argvalues):
+            ctx.define(name, value)
+
+        # Excuta o corpo da função
+        try:
+            for stmt in self.ast.body:
+                exec(stmt, ctx)
+        except LoxReturn as exception:
+            return exception.value
 
 @dataclass
 class LoxClass:
@@ -48,7 +64,7 @@ class LoxClass:
 
 
 @dataclass
-class LoxIntance:
+class LoxInstance:
     fields: dict[str, Value]
     klass: LoxClass
 

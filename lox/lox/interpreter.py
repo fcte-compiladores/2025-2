@@ -1,11 +1,15 @@
 from functools import singledispatch
 
-from .runtime import LoxCallable
 from .token import TokenType
-from .ast import Value
+from .ast import Function, Return, Value
 from .ast import Call, Expr, Literal, Grouping, Unary, Binary, Identifier, Assign
 from .ast import Block, ExprStmt, If, Print, Program, Stmt, Var, While
 from .env import Env
+from .runtime import LoxCallable, LoxFunction
+
+class LoxReturn(Exception):
+    def __init__(self, value: Value):
+        self.value = value
 
 
 @singledispatch
@@ -164,6 +168,19 @@ def _(cmd: While, ctx: Env):
         exec(cmd.body, ctx)
 
 
+@exec.register
+def _(cmd: Function, ctx: Env):
+    function = LoxFunction(cmd, ctx)
+    ctx.define(cmd.name, function)
+
+
+@exec.register
+def _(cmd: Return, ctx: Env):
+    if cmd.value is not None:
+        value = eval(cmd.value, ctx)
+    else:
+        value = None
+    raise LoxReturn(value)
 
 def truthy(obj) -> bool:
     if obj is False or obj is None:

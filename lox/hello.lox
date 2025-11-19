@@ -1,10 +1,12 @@
 fun sayHelloWorld() {
   sayHello("World");
+  return;
 }
 
 fun sayHello(name) {
   var x = name;
   print "Hello " + name + "!";
+  return name;
 }
 
 sayHelloWorld();

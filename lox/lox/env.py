@@ -31,5 +31,5 @@ class Env:
             raise RuntimeError(f"redefinindo variável {key}.")
         self.values[key] = value
 
-    def push(self):
+    def new_scope(self):
         return Env(self)
