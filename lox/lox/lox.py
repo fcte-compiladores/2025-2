@@ -4,6 +4,7 @@ import os
 from .ast import Value
 from .env import Env
 from .interpreter import eval, exec
+from .semantic import semantic_analysis
 
 if os.environ.get("LOX_PARSER", "lark") == "manual":
     from .scanner import tokenize # type: ignore
@@ -63,9 +64,14 @@ class Lox:
         return value
 
     def run_program(self, src: str):
-        tokens = tokenize(src)
-        ast = parse_program(tokens)
-        exec(ast, self.ctx)
+        try:
+            tokens = tokenize(src)
+            ast = parse_program(tokens)
+            semantic_analysis(ast)
+            exec(ast, self.ctx)
+        except RuntimeError as error:
+            print(error)
+            exit(1)
 
 
 if __name__ == "__main__":

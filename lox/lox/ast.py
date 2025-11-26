@@ -15,6 +15,7 @@ class Expr(abc.ABC):
     Classe base abstrata de todas as expressões Lox
     """
 
+
 @dataclass
 class Literal(Expr):
     value: Value
