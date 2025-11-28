@@ -27,7 +27,8 @@ block          : "{" _declaration* "}"
 
 ?expression    : assignment
 
-?assignment    : ( call "." )? IDENTIFIER "=" assignment
+?assignment    : IDENTIFIER "=" assignment           -> assignment
+               | call "." IDENTIFIER "=" assignment  -> setattr
                | logic_or
 
 ?logic_or      : logic_or  "or" logic_and

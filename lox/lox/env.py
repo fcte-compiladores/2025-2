@@ -26,6 +26,19 @@ class Env:
         else:
             raise KeyError(key)
 
+    def get_at(self, key: str, position: int):
+        if position > 0 and self.parent is not None:
+            return self.parent.get_at(key, position - 1)
+        return self.values[key]
+
+    def set_at(self, key: str, position: int, value: Value):
+        if position > 0 and self.parent is not None:
+            return self.parent.set_at(key, position - 1, value)
+        if position == 0:
+            self.values[key] = value
+        else:
+            raise KeyError(key)
+
     def define(self, key: str, value: Value):
         if key in self.values:
             raise RuntimeError(f"redefinindo variável {key}.")

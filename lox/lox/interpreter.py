@@ -99,16 +99,18 @@ def _(expr: Binary, ctx: Env):
 
 @eval.register
 def _(expr: Identifier, ctx: Env):
+    assert expr.distance_to_definition is not None
     try:
-        return ctx[expr.name]
+        return ctx.get_at(expr.name, expr.distance_to_definition)
     except KeyError:
         raise RuntimeError(f"variável não existe: {expr.name}")
 
 
 @eval.register
 def _(expr: Assign, ctx: Env) -> Value:
+    assert expr.distance_to_definition is not None
     value = eval(expr.right, ctx)
-    ctx[expr.name] = value
+    ctx.set_at(expr.name, expr.distance_to_definition, value)
     return value
 
 

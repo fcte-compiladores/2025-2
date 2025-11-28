@@ -68,6 +68,18 @@ class Lox:
             tokens = tokenize(src)
             ast = parse_program(tokens)
             semantic_analysis(ast)
+
+            if os.environ.get("LOX_PARSE_ONLY", "") == "1":
+                print("-" * 40)
+                if hasattr(ast, "pretty"):
+                    print(ast.pretty())
+                else:
+                    import rich
+
+                    rich.print(ast)
+                print("-" * 40)
+                exit("tchau!")
+
             exec(ast, self.ctx)
         except RuntimeError as error:
             print(error)

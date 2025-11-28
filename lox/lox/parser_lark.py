@@ -1,7 +1,17 @@
 from pathlib import Path
 import lark
 from .token import Token, TokenType
-from .ast import Binary, Expr, ExprStmt, Identifier, Literal, Return, Unary, Call
+from .ast import (
+    Assign,
+    Binary,
+    Expr,
+    ExprStmt,
+    Identifier,
+    Literal,
+    Return,
+    Unary,
+    Call,
+)
 from .ast import Block, If, Print, Stmt, Program, Var, Function
 
 BASE = Path(__file__).parent / "grammar.lark"
@@ -48,6 +58,9 @@ class LoxTransformer(lark.Transformer):
     @lark.v_args(inline=False)
     def arguments(self, children: list[Expr]):
         return children
+
+    def assignment(self, identifier: Identifier, right: Expr):
+        return Assign(identifier.name, right)
 
     #
     # Stmt
@@ -101,14 +114,6 @@ def parse_program(input: Input) -> Stmt:
     tree = GRAMMAR.parse(input, start="program")
     transformer = LoxTransformer()
     ast = transformer.transform(tree)
-    # print("-" * 40)
-    # if hasattr(ast, "pretty"):
-    #     print(ast.pretty())
-    # else:
-    #     import rich
-    #     rich.print(ast)
-    # print("-" * 40)
-    # exit("tchau!")
     return ast
 
 TOKEN_TYPES = {

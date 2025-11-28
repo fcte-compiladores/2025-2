@@ -23,6 +23,7 @@ class Literal(Expr):
 @dataclass
 class Identifier(Expr):
     name: str
+    distance_to_definition: int | None = None
 
 @dataclass
 class Binary(Expr):
@@ -43,6 +44,7 @@ class Grouping(Expr):
 class Assign(Expr):
     name: str
     right: Expr
+    distance_to_definition: int | None = None
 
 @dataclass
 class Call(Expr):

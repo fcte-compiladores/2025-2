@@ -1,0 +1,16 @@
+var x = 1;
+
+{
+  fun setX(value) {
+    x = value;
+  }
+  setX(0);
+  var x = 2;
+  setX(0);
+  {
+    print x;
+  }
+}
+
+print x;
+
