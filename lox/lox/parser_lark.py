@@ -4,11 +4,16 @@ from .token import Token, TokenType
 from .ast import (
     Assign,
     Binary,
+    Class,
     Expr,
     ExprStmt,
+    Getattr,
     Identifier,
     Literal,
     Return,
+    Setattr,
+    Super,
+    This,
     Unary,
     Call,
 )
@@ -62,6 +67,18 @@ class LoxTransformer(lark.Transformer):
     def assignment(self, identifier: Identifier, right: Expr):
         return Assign(identifier.name, right)
 
+    def this(self):
+        return This()
+
+    def super(self, identifier: Identifier):
+        return Super(identifier.name)
+
+    def getattr(self, left: Expr, identifier: Identifier):
+        return Getattr(left, identifier.name)
+
+    def setattr(self, left: Expr, identifier: Identifier, right: Expr):
+        return Setattr(left, identifier.name, right)
+
     #
     # Stmt
     #
@@ -99,6 +116,22 @@ class LoxTransformer(lark.Transformer):
     def parameters(self, children: list[Identifier]):
         return [identifier.name for identifier in children]
 
+    def class_decl(
+        self,
+        identifier: Identifier,
+        superclass: str | None,
+        methods: list[Function],
+    ):
+        return Class(identifier.name, superclass, methods)
+
+    def superclass(self, identifier: Identifier | None = None) -> str | None:
+        if identifier is None:
+            return None
+        return identifier.name
+
+    @lark.v_args(inline=False)
+    def class_body(self, functions: list[Function]) -> list[Function]:
+        return functions
 
 def tokenize(src: str) -> Input:
     return src

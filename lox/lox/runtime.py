@@ -1,6 +1,6 @@
 from __future__ import annotations
 import abc
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Callable, Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -35,6 +35,10 @@ class LoxFunction(LoxCallable):
     ast: Function
     closure: Env
 
+    @property
+    def name(self):
+        return self.ast.name
+
     def n_args(self):
        return len(self.ast.params)
 
@@ -56,15 +60,50 @@ class LoxFunction(LoxCallable):
         except LoxReturn as exception:
             return exception.value
 
-@dataclass
-class LoxClass:
-    name: str
-    superclass: LoxClass | None
-    methods: dict[str, LoxFunction]
+    def bind(self, instance: LoxInstance):
+        env = self.closure.new_scope()
+        env.define("this", instance)
+        return LoxFunction(self.ast, env)
 
+    def __repr__(self):
+        return f"fn {self.name}"
+
+
+@dataclass
+class LoxClass(LoxCallable):
+    name: str
+    superclass: LoxClass | None = None
+    methods: dict[str, LoxFunction] = field(default_factory=dict)
+
+    def call(self, ctx: Env, args: list[Value]):
+        instance = LoxInstance(self)
+        return instance
+
+    def n_args(self) -> int:
+        return 0
+
+    def get_method(self, name: str) -> LoxFunction | None:
+        return self.methods.get(name)
+
+    def __repr__(self):
+        return self.name
 
 @dataclass
 class LoxInstance:
-    fields: dict[str, Value]
     klass: LoxClass
+    fields: dict[str, Value] = field(default_factory=dict)
 
+    def getattr(self, attr: str) -> Value:
+        try:
+            return self.fields[attr]
+        except KeyError:
+            method = self.klass.get_method(attr)
+            if method is None:
+                raise RuntimeError(f"atributo {attr} não existe em {self}")
+            return method.bind(self)
+
+    def setattr(self, attr: str, value: Value):
+        self.fields[attr] = value
+
+    def __repr__(self):
+        return f"{self.klass} instance"

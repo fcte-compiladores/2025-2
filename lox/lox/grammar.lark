@@ -5,7 +5,10 @@ _declaration   : class_decl
                | var_decl
                | statement
 
-class_decl     : "class" IDENTIFIER ( "<" IDENTIFIER )? "{" function* "}"
+class_decl     : "class" IDENTIFIER superclass "{" class_body "}"
+superclass     : ( "<" IDENTIFIER )?
+class_body     : function*
+
 ?fun_decl      : "fun" function
 var_decl       : "var" IDENTIFIER ( "=" expression )? ";"
 
@@ -57,8 +60,12 @@ block          : "{" _declaration* "}"
                | primary
 
 ?primary       : LITERAL
-               | NUMBER | STRING | IDENTIFIER | "(" expression ")"
-               | "super" "." IDENTIFIER
+               | NUMBER
+               | STRING
+               | IDENTIFIER
+               | "(" expression ")"
+               | "this"                           -> this
+               | "super" "." IDENTIFIER           -> super
 
 function       : IDENTIFIER "(" parameters ")" block
 parameters     : [ IDENTIFIER ( "," IDENTIFIER )* ]

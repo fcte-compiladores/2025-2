@@ -1,11 +1,11 @@
 from functools import singledispatch
 
 from .token import TokenType
-from .ast import Function, Return, Value
+from .ast import Class, Function, Getattr, Return, Setattr, This, Value
 from .ast import Call, Expr, Literal, Grouping, Unary, Binary, Identifier, Assign
 from .ast import Block, ExprStmt, If, Print, Program, Stmt, Var, While
 from .env import Env
-from .runtime import LoxCallable, LoxFunction
+from .runtime import LoxCallable, LoxFunction, LoxClass, LoxInstance
 
 class LoxReturn(Exception):
     def __init__(self, value: Value):
@@ -124,6 +124,34 @@ def _(expr: Call, ctx: Env) -> Value:
         raise RuntimeError(f"{callee}: número errado de argumentos.")
     return callee.call(ctx, args)
 
+
+@eval.register
+def _(expr: Getattr, ctx: Env) -> Value:
+    object = eval(expr.left, ctx)
+    if not isinstance(object, LoxInstance):
+        raise RuntimeError(f"{object} não é uma instância.")
+    return object.getattr(expr.attr)
+
+
+@eval.register
+def _(expr: Setattr, ctx: Env) -> Value:
+    object = eval(expr.left, ctx)
+    value = eval(expr.right, ctx)
+    if not isinstance(object, LoxInstance):
+        raise RuntimeError(f"{object} não é uma instância.")
+    object.setattr(expr.attr, value)
+    return value
+
+
+@eval.register
+def _(expr: This, ctx: Env):
+    assert expr.distance_to_definition is not None
+    try:
+        return ctx.get_at("this", expr.distance_to_definition)
+    except KeyError:
+        raise RuntimeError("variável não existe: this")
+
+
 #
 # Implementações de exec
 #
@@ -183,6 +211,17 @@ def _(cmd: Return, ctx: Env):
     else:
         value = None
     raise LoxReturn(value)
+
+@exec.register
+def _(cmd: Class, ctx: Env):
+    lox_class = LoxClass(cmd.name)
+    for method_ast in cmd.body:
+        method_name = method_ast.name
+        lox_method = LoxFunction(method_ast, ctx)
+        lox_class.methods[method_name] = lox_method
+
+    ctx.define(cmd.name, lox_class)
+
 
 def truthy(obj) -> bool:
     if obj is False or obj is None:

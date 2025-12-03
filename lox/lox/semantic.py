@@ -3,16 +3,16 @@ from functools import singledispatch
 from dataclasses import dataclass, field
 from typing import Literal as LiteralType
 
-from .ast import Assign, Block, Function, Identifier, Return, Var
+from .ast import Assign, Block, Class, Function, Identifier, Return, This, Var
 from .ast import Expr, Stmt
 
 type DeclarationType = LiteralType["declared", "defined"]
-
+type FunctionContext = LiteralType["toplevel", "function", "method"]
 
 @dataclass
 class Ctx:
     parent: Ctx | None = None
-    function_context: LiteralType["toplevel", "function", "method"] = "toplevel"
+    function_context: FunctionContext = "toplevel"
     errors: list[Exception] = field(default_factory=list)
     declarations: dict[str, DeclarationType] = field(default_factory=dict)
 
@@ -88,6 +88,18 @@ def _(cmd: Function, ctx: Ctx):
 
 
 @analyse.register
+def _(cmd: Class, ctx: Ctx):
+    ctx.declare(cmd.name)
+    ctx.define(cmd.name)
+
+    ctx = ctx.push()
+    ctx.declare("this")
+    ctx.define("this")
+    for method in cmd.body:
+        analyse(method, ctx)
+
+
+@analyse.register
 def _(cmd: Block, ctx: Ctx):
     child_ctx = ctx.push()
     for stmt in cmd.body:
@@ -110,3 +122,8 @@ def _(cmd: Identifier, ctx: Ctx):
 def _(cmd: Assign, ctx: Ctx):
     cmd.distance_to_definition = ctx.distance_to_definition(cmd.name)
     analyse(cmd.right, ctx)
+
+
+@analyse.register
+def _(cmd: This, ctx: Ctx):
+    cmd.distance_to_definition = ctx.distance_to_definition("this")

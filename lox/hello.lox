@@ -1,13 +1,24 @@
-fun sayHelloWorld() {
-  sayHello("World");
-  return;
+class HelloWorld < Superclass {
+  init(name) {
+    this.name = name;
+  }
+
+  sayHello() {
+    print "Hello " + this.name + "!";
+  }
 }
 
 fun sayHello(name) {
-  var x = name;
-  print "Hello " + name + "!";
-  return name;
+    print "Hello " + name + "!";
 }
 
-sayHelloWorld();
-sayHello("Maria");
+var hello = HelloWorld();
+hello.init()
+hello.name = "World";
+var method = hello.sayHello;
+method();
+
+
+var hello2 = HelloWorld();
+hello2.name = "All";
+hello2.sayHello();

@@ -52,6 +52,30 @@ class Call(Expr):
     args: list[Expr]
 
 
+@dataclass
+class This(Expr):
+    distance_to_definition: int | None = None
+
+
+@dataclass
+class Super(Expr):
+    method: str
+    distance_to_definition: int | None = None
+
+
+@dataclass
+class Getattr(Expr):
+    left: Expr
+    attr: str
+
+
+@dataclass
+class Setattr(Expr):
+    left: Expr
+    attr: str
+    right: Expr
+
+
 class Stmt:
     """
     Classe base abstrata de todos comandos Lox
@@ -112,5 +136,5 @@ class Return(Stmt):
 class Class(Stmt):
     name: str
     superclass: str | None
-    body: dict[str, Function]
+    body: list[Function]
 
