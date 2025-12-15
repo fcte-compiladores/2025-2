@@ -7,6 +7,8 @@ Inscrição para atividade no Github Classroom: https://classroom.github.com/a/l
 Inscrição no Moodle: https://aprender3.unb.br/course/view.php?id=29181
 Senha: loxlox
 
+Substitutiva: https://github.com/fabiommendes/compiladores_2025-2_prova-substitutiva/
+
 ==============
 Compiladores 1
 ==============
